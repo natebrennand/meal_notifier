@@ -13,23 +13,15 @@ def before_request():
 def connect_db():
 	return lite.connect( 'data.db' )
 
-
 @app.route('/')
 def home():
 	get_food()
 	return render_template('index.html')
 
+@app.route('/choose')
+def choose():
+	return render_template('choose.html', meal=get_meal_items('BN') )
 
-def start_db(table_name="data"):
-	cursor = g.db.cursor()
-	sql_init = '''
-	CREATE TABLE if NOT EXISTS {} (
-		phone_num INTEGER,
-		name TEXT,
-		random_id INTEGER
-	)
-	'''.format(table_name)
-	cursor.execute(sql_init)
 
 def get_meal_items(meal_name):
 	cursor = g.db.cursor()
@@ -39,10 +31,13 @@ def get_meal_items(meal_name):
 	FROM
 		food F
 	WHERE
-		F.meal_name = {}
+		F.meal_type = "{}";
 	""".format(meal_name)
-	matches = cursor.execute(sql_query)
-	return matches
+	print sql_query
+	cursor.execute(sql_query)
+	temp = cursor.fetchall()
+	print temp
+	return temp
 
 
 def get_food(table_name="food"):
@@ -52,7 +47,7 @@ def get_food(table_name="food"):
 		food_name TEXT,
 		meal_type TEXT,
 		PRIMARY KEY (food_name ASC)
-	)
+	);
 	'''.format(table_name)
 	cursor.execute(sql_init)
 
@@ -64,8 +59,10 @@ def get_food(table_name="food"):
 		meal_type = meal['meal_type']
 		for item in meal['menu']:
 			sql_insert = """
-			INSERT INTO food VALUES ({},{})
-			""".format(item,meal_type)
+			INSERT or IGNORE
+			INTO food VALUES ("{}","{}");""".format(item,meal_type)
+			cursor.execute(sql_insert)
+			g.db.commit()
 
 @app.teardown_request
 def teardown_request(exception):

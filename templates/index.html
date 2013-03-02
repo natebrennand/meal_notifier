@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block script %}
 {% endblock %}
@@ -7,7 +7,12 @@
 Meal Notifier
 {% endblock %}
 
-{% block body %}
+
+{% block header %}
 <h1>Meal Notifier!</h1>
+{% endblock %}
+
+{% block body %}
 <p>Never miss your favorite meal!</p>
+<a href='/choose'>Choose your meals here!</a>
 {% endblock %}
