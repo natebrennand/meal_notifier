@@ -20,8 +20,11 @@ def home():
 
 @app.route('/choose')
 def choose():
-	return render_template('choose.html', meal=get_meal_items('BN') )
+	return render_template('choose.html', meals=get_meal_items('BN') )
 
+@app.route('/sign-up', methods=['POST'])
+def signed_up():
+	return render_template('sign-up.html')
 
 def get_meal_items(meal_name):
 	cursor = g.db.cursor()
@@ -33,11 +36,10 @@ def get_meal_items(meal_name):
 	WHERE
 		F.meal_type = "{}";
 	""".format(meal_name)
-	print sql_query
 	cursor.execute(sql_query)
 	temp = cursor.fetchall()
-	print temp
 	return temp
+	
 
 
 def get_food(table_name="food"):
