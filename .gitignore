@@ -4,6 +4,7 @@ include
 secrets.py
 templates/template.html
 data.db
+.DS_Store
 
 # C extensions
 *.so
