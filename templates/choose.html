@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block script %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+<script>
+$(function(){
+	#("div#foods").add(<span></span>
+		)
+});
+</script>
 {% endblock %}
 
 {% block title %}
@@ -11,7 +18,7 @@ Meal Notifier
 <h1>Please check off the meals that you are interested in!</h1>
 <h3>Every day that a meal that you have checked off is being served you will be notified.</h3>
 <br><br>
-<p>{{meal}}</p>
+<div id="foods"></div>
 {% endblock %}
 
 {% block body %}
