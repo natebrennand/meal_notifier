@@ -1,5 +1,6 @@
 *.py[cod]
-
+.Python
+include
 secrets.py
 
 # C extensions
