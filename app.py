@@ -9,8 +9,7 @@ def home():
 	return render_template('index.html')
 
 def start_db(cursor, table_name="data"):
-	sql_init = 
-	'''
+	sql_init = '''
 	CREATE TABLE if NOT EXISTS {} (
 		phone_num INTEGER,
 		name TEXT,
