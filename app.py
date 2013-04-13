@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, url_for, request
 from secrets import columbia_token
 import sqlite3 as lite
 import requests
@@ -16,19 +16,31 @@ def connect_db():
     return lite.connect('data.db')
 
 
+#############################################
+# Home
+#############################################
 @app.route('/')
 def home():
     get_food()
-    return render_template('index.html')
+    return render_template('home.html')
 
 
+#############################################
+# Choose Meals
+#############################################
 @app.route('/choose')
 def choose():
-    return render_template('choose.html', meals=get_meal_items('DN'))
+    return render_template(url_for('choose'), meals=get_meal_items('DN'))
 
 
+#############################################
+# Sign
+#############################################
 @app.route('/sign-up', methods=['POST'])
 def signed_up():
+    if request.method == 'GET':
+        return url_for('home')
+    
     return render_template('sign-up.html')
 
 
@@ -45,8 +57,8 @@ def get_meal_items(meal_name):
         F.food_name;
     """.format(meal_name)
     cursor.execute(sql_query)
-    temp = cursor.fetchall()
-    return temp
+    meals = cursor.fetchall()
+    return meals
 
 
 def get_food(table_name="food"):
